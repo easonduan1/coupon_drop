@@ -239,8 +239,8 @@ function init_coupon() {
           });
 
           console.log("confirm");
-          // 存入cookie
-          setCookie("discount_code", "JP2FRZX1CJ2T", 0);
+          // 存入shopify cookie
+          document.cookie = "discount_code=123";
         });
     }
 
@@ -249,68 +249,35 @@ function init_coupon() {
     }
   }
 
+  const currentPath = window.location.href;
+
   customElements.define("coupon-drop", CouponDrop);
   let couponDrop = document.createElement("coupon-drop");
-
-  // 一次性展示
-  let currentPath = window.location.href;
-  // 存储当前的product[]
-  const productList = getCookie("long_time");
 
   if (currentPath.includes("one_time")) {
     // 一次性渲染
     document.body.appendChild(couponDrop);
   } else if (currentPath.includes("long_time")) {
     document.body.appendChild(couponDrop);
-    // 存入cookie
-    setCookie(
-      "long_time",
-      window.location.pathname.replace("/products/", "|"),
-      7
-    );
+    // 存入storage
+    setLocaStorage(window.location.pathname.replace("/products/", "|"));
   } else if (
-    window.location.pathname.includes("/products") &&
-    productList != undefined &&
-    whetherLongShow()
+    window.localStorage.getItem("long_time") &&
+    window.localStorage
+      .getItem("long_time")
+      .includes(window.location.pathname.replace("/products/", ""))
   ) {
     document.body.appendChild(couponDrop);
   }
 
-  function whetherLongShow() {
-    console.log(
-      productList,
-      window.location.pathname.replace("/products/", "")
-    );
+  function setLocaStorage(value) {
+    if (window.localStorage.getItem("long_time")) {
+      const str = window.localStorage.getItem("long_time").concat(value);
 
-    if (
-      productList.includes(window.location.pathname.replace("/products/", ""))
-    )
-      return true;
-    else return false;
-  }
-
-  function getCookie(name) {
-    // 遍历cookie下面的数据,得到对应name的cookie数组
-    const value = document.cookie
-      .split(";")
-      .filter((value) => value.includes(name))[0]
-      .split("|");
-    if (document.cookie == null || value.length == 0) return [];
-    return value;
-  }
-
-  function setCookie(name, value, time_day = 0) {
-    let cookieString = document.cookie
-      .split(";")
-      .filter((value) => value.includes(name))[0]
-      .split("|")
-      .concat(value);
-    if (time_day !== 0) {
-      const expires = new Date();
-      expires.setDate(expires.getDate() + time_day);
-      cookieString += ` ;expires=${expires.toUTCString()};`;
+      window.localStorage.setItem("long_time", str);
+    } else {
+      window.localStorage.setItem("long_time", value);
     }
-    document.cookie = cookieString;
   }
 }
 
