@@ -21,7 +21,7 @@ function init_coupon() {
   background: linear-gradient(180deg, #E584DB 4.46%, #70377C 94.06%);
   box-shadow: 0px 4px 12px 0px #0000004D;
   box-sizing: border-box;
-  z-index: 10000;
+  z-index: 1019;
   }
   .coupon-left {
     display: flex;
@@ -172,29 +172,28 @@ function init_coupon() {
   </style>
   <div class="coupon-drop">
   <div class="coupon-left">
-  <div class="discount_dollar">$10 OFF</div>
-  <div class="countdown">Dismiss in <span class="count">15.0</span> s</div>
+  <div class="discount_dollar">€20</div>
+  <div class="countdown">Schließen in <span class="count">15.0</span> s</div>
   </div>
   <div class="coupon-right">
   <div class="not-confirmed">
-    Bundle up and save up to $10! limited discount, save now!
+    Wow, Glückwunsch! Du hast einen geheimen Gutschein erhalten!
   </div>
   <div class="content-confirm confirmed ready-confirmed">
-    🎉 Code secured, discount will be auto applied at checkout.
+    🎉 In der Tasche! Du erhältst beim Bezahlen einen zusätzlichen Rabatt!
   </div>
-  <div class="confirm-button not-confirmed">Get Now</div>
+  <div class="confirm-button not-confirmed">Holen!</div>
   <div class="confirm-button confirmed-button confirmed ready-confirmed">
     <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M10.1102 16.1853L19.2353 6.92607L20.6598 8.32992L10.1309 19.0137L3.72063 12.6964L5.12449 11.2719L10.1102 16.1853Z" fill="#70377C"/>
     </svg>
-    Secured
+    Erhalten
   </div>
   
   <button class="close-button">
-    <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+    <svg width="24" height="24" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M1 1L15 15M15 1L1 15" stroke="#FFFFFF" stroke-width="2" fill="none"/>
     </svg>
-    
   </button>
   </div>
   </div>
@@ -232,13 +231,13 @@ function init_coupon() {
           // 改变相关状态
           confimState.apply(this);
           // 存入shopify cookie, path设置为全局
-          docCookies.setItem("discount_code", "JP2FRZX1CJ2T", 100000, "/");
+          docCookies.setItem("discount_code", "WELCOME20", "", "/");
           // 停止计时
           clearInterval(interval);
-          // 两秒后关闭
+          // 3.5秒后关闭
           setTimeout(() => {
             this.remove();
-          }, 2000);
+          }, 3500);
         });
 
       function confimState() {
@@ -261,8 +260,10 @@ function init_coupon() {
 
   customElements.define("coupon-drop", CouponDrop);
   let couponDrop = document.createElement("coupon-drop");
-
-  if (currentPath.includes("one-term")) {
+  console.log(docCookies.getItem("discount_code"));
+  if (docCookies.getItem("discount_code") == "WELCOME20") {
+    console.log("do nothing");
+  } else if (currentPath.includes("one-time")) {
     // 一次性渲染
     document.body.appendChild(couponDrop);
   } else if (currentPath.includes("long-term")) {
