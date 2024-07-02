@@ -265,10 +265,10 @@ function init_coupon() {
   // 判断是否展示drop
   if (docCookies.getItem("discount_code") == "WELCOME20") {
     console.log("do nothing");
-  } else if (searchParams.get("utm") === "one-time") {
+  } else if (searchParams.get("utm_term") === "one-time") {
     // 一次性渲染
     document.body.appendChild(couponDrop);
-  } else if (searchParams.get("utm") === "long-term") {
+  } else if (searchParams.get("utm_term") === "long-term") {
     document.body.appendChild(couponDrop);
     // 存入cookie
     docCookies.setItem(
