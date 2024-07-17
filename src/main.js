@@ -231,7 +231,7 @@ function init_coupon() {
           // 改变相关状态
           confimState.apply(this);
           // 存入shopify cookie, path设置为全局
-          docCookies.setItem("discount_code", "WELCOME20", "", "/");
+          docCookies.setItem("discount_code", "PERK20", "", "/");
           // 停止计时
           clearInterval(interval);
           // 3.5秒后关闭
